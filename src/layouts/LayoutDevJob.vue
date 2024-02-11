@@ -22,7 +22,9 @@ defineProps({
 <template>
   <div class="nombre-sitio contenedor">
     <h1>
-      <a href="/">DevJobs</a>
+      <RouterLink :to="{ name: 'home' }">
+        DevJobs
+      </RouterLink>
     </h1>
 
     <div v-if="bar" class="buscador">
@@ -36,7 +38,7 @@ defineProps({
   <header class="site-header contenedor separador">
     <h2>{{ name }}</h2>
     <p v-if="tagline" class="tagline">{{ tagline }}</p>
-    <RouterLink v-if="button" :to="{ name: 'home' }" class="btn btn-azul">Publicar Nueva Vacante</RouterLink>
+    <RouterLink v-if="button" :to="{ name: 'vacant-new' }" class="btn btn-azul">Publicar Nueva Vacante</RouterLink>
   </header>
 
   <div class="contenido-principal contenedor">

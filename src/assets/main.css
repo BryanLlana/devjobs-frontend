@@ -283,14 +283,28 @@ h3 {
 .default-form .campo {
   margin-bottom: 3rem;
   display: flex;   
+  flex-direction: column;
+}
+
+@media (width >= 768px){
+  .default-form .campo {
+    flex-direction: row;
+  }
 }
 .default-form label {
   padding-top: 1rem;
-  flex: 0 0 18rem;
+  margin-bottom: 1.5rem;
   font-size: 1.8rem;
   color: white;
   font-weight: 700;
   text-transform: uppercase;
+}
+
+@media (width >= 768px){
+  .default-form label {
+    flex: 0 0 18rem;
+    margin-bottom: 0;
+  }
 }
 .default-form input[type="email"],
 .default-form input[type="password"],
