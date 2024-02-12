@@ -10,9 +10,14 @@ const router = createRouter({
       component: HomeView
     },
     {
-      path: '/vacantes/nueva',
+      path: '/vacante/nueva',
       name: 'vacant-new',
       component: () => import('@/views/VacantNewView.vue')
+    },
+    {
+      path: '/vacante/:id',
+      name: 'vacant',
+      component: () => import('@/views/VacantView.vue')
     }
   ]
 })

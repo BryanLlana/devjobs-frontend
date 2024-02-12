@@ -6,5 +6,8 @@ export const vacantApi = {
   },
   getVacants: async () => {
     return await api.get('/vacant')
+  },
+  getVacant: async id => {
+    return await api.get(`/vacant/${id}`)
   }
 }
