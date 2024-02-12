@@ -1,4 +1,5 @@
 <script setup>
+import Alert from '@/components/Alert.vue';
 import LayoutDevJob from '@/layouts/LayoutDevJob.vue';
 import { useVacantStore } from '@/stores/vacant'
 
@@ -28,15 +29,19 @@ const inputDescription = e => {
   >
     <main class="contenedor">
       <form @submit="vacantStore.createVacant" class="default-form">
+        <Alert v-if="vacantStore.alert.message" :message="vacantStore.alert.message" :error="vacantStore.alert.error" />
         <h3>Información General</h3>
+        <p class="error-input" v-if="vacantStore.errorInput.title">{{ vacantStore.errorInput.title }}</p>
         <div class="campo">
           <label for="title">Título</label>
           <input v-model="vacantStore.vacant.title" type="text" id="title" placeholder="Ej: React Developer">
         </div>
+        <p class="error-input" v-if="vacantStore.errorInput.company">{{ vacantStore.errorInput.company }}</p>
         <div class="campo">
           <label for="company">Empresa</label>
           <input v-model="vacantStore.vacant.company" type="text" id="company" placeholder="Ej: Facebook">
         </div>
+        <p class="error-input" v-if="vacantStore.errorInput.location">{{ vacantStore.errorInput.location }}</p>
         <div class="campo">
           <label for="location">Ubicación</label>
           <input v-model="vacantStore.vacant.location" type="text" id="location" placeholder="Ej: México o Remoto">
@@ -45,6 +50,7 @@ const inputDescription = e => {
           <label for="salary">Salario (USD)</label>
           <input v-model="vacantStore.vacant.salary" type="text" id="salary" placeholder="Ej: $500 USD">
         </div>
+        <p class="error-input" v-if="vacantStore.errorInput.contract">{{ vacantStore.errorInput.contract }}</p>
         <div class="campo">
           <label for="contract">Contrato</label>
           <select v-model="vacantStore.vacant.contract" id="contract">
@@ -54,6 +60,7 @@ const inputDescription = e => {
         </div>
 
         <h3>Descripción del puesto</h3>
+        <p class="error-input" v-if="vacantStore.errorInput.description">{{ vacantStore.errorInput.description }}</p>
         <div class="campo descripcion">
           <label>Descripción del puesto</label>
           <input type="hidden" id="x">
@@ -61,6 +68,7 @@ const inputDescription = e => {
         </div>
 
         <h3>Conocimientos</h3>
+        <p class="error-input" v-if="vacantStore.errorInput.skills">{{ vacantStore.errorInput.skills }}</p>
         <ul class="lista-conocimientos">
           <li
             @click="selectSkill"

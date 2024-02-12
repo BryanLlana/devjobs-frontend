@@ -539,3 +539,28 @@ p.candidatos {
   color: white;
   font-size: 1.8rem;
 }
+
+.error-input {
+  color: red;
+  font-size: 2rem;
+  font-weight: 700;
+  text-align: center;
+}
+
+.alert {
+  color: white;
+  font-size: 2rem;
+  border-radius: 1rem;
+  text-align: center;
+  font-weight: 700;
+  padding-top: 1rem;
+  padding-bottom: 1rem;
+}
+
+.error-true {
+  background-color: #C80045;
+}
+
+.error-false {
+  background-color: #00C897;
+}

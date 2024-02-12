@@ -1,6 +1,7 @@
 import { defineStore } from 'pinia'
-import { reactive } from 'vue'
+import { reactive, ref } from 'vue'
 import { vacantApi } from '../../api/vacant'
+import { useRouter } from 'vue-router' 
 
 export const useVacantStore = defineStore('vacant', () => {
   const vacant = reactive({
@@ -13,18 +14,53 @@ export const useVacantStore = defineStore('vacant', () => {
     skills: new Set()
   })
 
+  const errorInput = ref({})
+  const alert = reactive({
+    message: '',
+    error: false
+  })
+  const router = useRouter()
+
   const createVacant = async e => {
     e.preventDefault()
 
+    if (vacant.title === '') errorInput.value.title = 'El título es obligatorio'
+    if (vacant.company === '') errorInput.value.company = 'La empresa es obligatoria'
+    if (vacant.location === '') errorInput.value.location = 'La ubicación es obligatoria'
+    if (vacant.contract === '') errorInput.value.contract = 'El contrato es obligatorio'
+    if (vacant.description === '') errorInput.value.description = 'La descripción es obligatoria'
+    if (vacant.skills.size === 0) errorInput.value.skills = 'Los skills son obligatorios'
+
     try {
-      const { data } = await vacantApi.createVacant('da')
-    } catch (error) {
+      const { data } = await vacantApi.createVacant({
+        ...vacant,
+        skills: [...vacant.skills]
+      })
+
+      alert.message = data.message
+      errorInput.value = {}
+      vacant.title = ''
+      vacant.company = ''
+      vacant.location = ''
+      vacant.salary = ''
+      vacant.contract = ''
+      vacant.description = ''
+      vacant.skills = new Set()
+
+      setTimeout(() => {
+        alert.message = ''
+        router.push({ name: 'home' })
+      }, 2000)
       
+    } catch (error) {
+      console.log(error)
     }
   }
 
   return {
     vacant,
-    createVacant
+    createVacant,
+    errorInput,
+    alert
   }
 })
