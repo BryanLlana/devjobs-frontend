@@ -1,5 +1,4 @@
 <script setup>
-import Alert from '@/components/Alert.vue';
 import LayoutDevJob from '@/layouts/LayoutDevJob.vue';
 import { useVacantStore } from '@/stores/vacant'
 
@@ -29,7 +28,6 @@ const inputDescription = e => {
   >
     <main class="contenedor">
       <form @submit="vacantStore.createVacant" class="default-form">
-        <Alert v-if="vacantStore.alert.message" :message="vacantStore.alert.message" :error="vacantStore.alert.error" />
         <h3>Información General</h3>
         <p class="error-input" v-if="vacantStore.errorInput.title">{{ vacantStore.errorInput.title }}</p>
         <div class="campo">

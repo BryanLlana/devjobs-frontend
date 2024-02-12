@@ -1,9 +1,12 @@
 import { defineStore } from 'pinia'
 import { reactive, ref } from 'vue'
-import { vacantApi } from '../../api/vacant'
+import { inject } from 'vue'
+import { vacantApi } from '@/api/vacant'
 import { useRouter } from 'vue-router' 
 
 export const useVacantStore = defineStore('vacant', () => {
+  const toast = inject('toast')
+  
   const vacant = reactive({
     title: '',
     company: '',
@@ -14,12 +17,19 @@ export const useVacantStore = defineStore('vacant', () => {
     skills: new Set()
   })
 
+  const vacants = ref([])
+
   const errorInput = ref({})
-  const alert = reactive({
-    message: '',
-    error: false
-  })
   const router = useRouter()
+
+  const getVacants = async () => {
+    try {
+      const { data } = await vacantApi.getVacants()
+      vacants.value = data
+    } catch (error) {
+      console.log(error)
+    }
+  }
 
   const createVacant = async e => {
     e.preventDefault()
@@ -37,7 +47,6 @@ export const useVacantStore = defineStore('vacant', () => {
         skills: [...vacant.skills]
       })
 
-      alert.message = data.message
       errorInput.value = {}
       vacant.title = ''
       vacant.company = ''
@@ -47,10 +56,14 @@ export const useVacantStore = defineStore('vacant', () => {
       vacant.description = ''
       vacant.skills = new Set()
 
+      toast.open({
+        message: data.message,
+        type: 'success'
+      })
+
       setTimeout(() => {
-        alert.message = ''
         router.push({ name: 'home' })
-      }, 2000)
+      }, 3000)
       
     } catch (error) {
       console.log(error)
@@ -59,8 +72,9 @@ export const useVacantStore = defineStore('vacant', () => {
 
   return {
     vacant,
+    vacants,
     createVacant,
     errorInput,
-    alert
+    getVacants
   }
 })
