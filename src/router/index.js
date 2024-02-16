@@ -18,6 +18,11 @@ const router = createRouter({
       path: '/vacante/:id',
       name: 'vacant',
       component: () => import('@/views/VacantView.vue')
+    },
+    {
+      path: '/vacante/editar/:id',
+      name: 'vacant-edit',
+      component: () => import('@/views/VacantEditView.vue')
     }
   ]
 })

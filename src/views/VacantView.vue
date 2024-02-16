@@ -1,22 +1,30 @@
 <script setup>
 import { vacantApi } from '@/api/vacant';
 import LayoutDevJob from '@/layouts/LayoutDevJob.vue';
-import { onMounted, ref } from 'vue';
-import { useRoute } from 'vue-router';
+import { inject, onMounted, ref } from 'vue';
+import { useRoute, useRouter } from 'vue-router';
 const route = useRoute()
+const router = useRouter()
 const vacant = ref({})
+const toast = inject('toast')
 
 onMounted(async () => {
-  const { data } = await vacantApi.getVacant(route.params.id)
-  vacant.value = data
+  try {
+    const { data } = await vacantApi.getVacant(route.params.id)
+    vacant.value = data
+  } catch (error) {
+    router.push({ name: 'home' })
+    toast.open({
+      message: error.response.data.message,
+      type: 'error'
+    })
+  }
 })
 </script>
 
 <template>
-  <LayoutDevJob 
-    name="Nueva Vacante"
-    :bar="true"
-  >
+  <LayoutDevJob :name="vacant.title" :bar="true">
+    <RouterLink :to="{ name: 'vacant-edit', params: { id: vacant._id } }" class="btn btn-azul editar-btn">Editar Vacante</RouterLink>
     <div class="contenido-superior vacante contenedor">
       <div class="caja">
         <p class="etiqueta">Empresa</p>
@@ -40,6 +48,8 @@ onMounted(async () => {
       <main class="contenido">
         <h2>Descripción del puesto</h2>
         <div v-html="vacant.description" class="vacante-descripcion"></div>
+
+
       </main>
       <aside class="sidebar">
         <h3>Conocimientos Deseados</h3>

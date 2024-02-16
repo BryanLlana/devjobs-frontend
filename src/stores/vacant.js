@@ -17,10 +17,34 @@ export const useVacantStore = defineStore('vacant', () => {
     skills: new Set()
   })
 
+  const vacantEdit = reactive({
+    _id: '',
+    title: '',
+    company: '',
+    location: '',
+    salary: '',
+    contract: '',
+    description: '',
+    skills: new Set()
+  })
+
   const vacants = ref([])
 
   const errorInput = ref({})
   const router = useRouter()
+
+  const getVacant = async (id) => {
+    try {
+      const { data: { candidates, ...values } } = await vacantApi.getVacant(id)
+      Object.assign(vacantEdit, values)
+    } catch (error) {
+      router.push({ name: 'home' })
+      toast.open({
+        message: error.response.data.message,
+        type: 'error'
+      })
+    }
+  }
 
   const getVacants = async () => {
     try {
@@ -72,9 +96,11 @@ export const useVacantStore = defineStore('vacant', () => {
 
   return {
     vacant,
+    vacantEdit,
     vacants,
     createVacant,
     errorInput,
-    getVacants
+    getVacants,
+    getVacant
   }
 })
