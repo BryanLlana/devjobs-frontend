@@ -9,5 +9,8 @@ export const vacantApi = {
   },
   getVacant: async id => {
     return await api.get(`/vacant/${id}`)
+  },
+  updateVacant: async (id, data) => {
+    return await api.patch(`/vacant/${id}`, data)
   }
 }

@@ -34,7 +34,7 @@ const inputDescription = e => {
     tagline="Llena el formulario y publica tu vacante"
   >
     <main class="contenedor">
-      <form @submit="vacantStore.createVacant" class="default-form">
+      <form @submit="vacantStore.updateVacant" class="default-form">
         <h3>Información General</h3>
         <p class="error-input" v-if="vacantStore.errorInput.title">{{ vacantStore.errorInput.title }}</p>
         <div class="campo">

@@ -94,11 +94,48 @@ export const useVacantStore = defineStore('vacant', () => {
     }
   }
 
+  const updateVacant = async e => {
+    e.preventDefault()
+
+    if (vacantEdit.title === '') errorInput.value.title = 'El título es obligatorio'
+    if (vacantEdit.company === '') errorInput.value.company = 'La empresa es obligatoria'
+    if (vacantEdit.location === '') errorInput.value.location = 'La ubicación es obligatoria'
+    if (vacantEdit.contract === '') errorInput.value.contract = 'El contrato es obligatorio'
+    if (vacantEdit.description === '') errorInput.value.description = 'La descripción es obligatoria'
+    if (vacantEdit.skills.size === 0) errorInput.value.skills = 'Los skills son obligatorios'
+
+    try {
+      const { _id, ...values } = vacantEdit
+      const { data } = await vacantApi.updateVacant(vacantEdit._id, {
+        ...values,
+        skills: [...vacantEdit.skills]
+      })
+
+      errorInput.value = {}
+      vacantEdit.title = ''
+      vacantEdit.company = ''
+      vacantEdit.location = ''
+      vacantEdit.salary = ''
+      vacantEdit.contract = ''
+      vacantEdit.description = ''
+      vacantEdit.skills = new Set()
+
+      toast.open({
+        message: data.message,
+        type: 'success'
+      })
+      router.push({ name: 'home' })
+    } catch (error) {
+      console.log(error)
+    }
+  }
+
   return {
     vacant,
     vacantEdit,
     vacants,
     createVacant,
+    updateVacant,
     errorInput,
     getVacants,
     getVacant
